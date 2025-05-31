@@ -9,15 +9,5 @@ const db = mysql.createPool({
 	database:'sport_shop'
 })
 
-// 测试数据库连接
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error('❌ 数据库连接失败：', err.message)
-  } else {
-    console.log('✅ 数据库连接成功！')
-    connection.release() // 释放连接
-  }
-})
-
 //将数据库暴露出去
 module.exports = db

@@ -9,6 +9,15 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 app.use(cors())
 
+//Multer是一个nodejs中间件，用于处理multipart/form-data类型的表单数据，主要用于上传文件
+const multer = require('multer')
+//在server服务器端新建一个public文件。在public文件下新建upload文件用于存放数据
+const upload = multer({dest:'./public/upload'})
+
+app.use(upload.any())
+//静态托管
+app.use(express.static('./public')) 
+
 //当extended为false时表示值为数组或字符串、true时为任意类型
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -28,16 +37,19 @@ app.use((req,res,next)=>{
 
 const jwtconfig = require('./jwt_config/index.js')
 const {expressjwt:jwt} = require('express-jwt')
-app.use(jwt({
-	secret:jwtconfig.jwtSecretKey,algorithms:['HS256']
-}).unless({
-	//除了注册与登录之外都要用到token验证
-	path:[/^\/api\//],
-}))
+// app.use(jwt({
+// 	secret:jwtconfig.jwtSecretKey,algorithms:['HS256']
+// }).unless({
+// 	//除了注册与登录之外都要用到token验证
+// 	path:[/^\/api\//],
+// }))
 
 const loginRouter = require('./router/login')
 const Joi = require('joi')
 app.use('/api',loginRouter)
+
+const userRouter = require('./router/userinfo')
+app.use('/user',userRouter)
 
 //对不符合joi规则的情况进行报错
 app.use((req,res,next) => {
