@@ -28,7 +28,7 @@ router.post('/bindAccount',userinfoHandle.bindAccount)
 router.post('/changePassword',expressJoi(password_limit),userinfoHandle.changePassword)
 
 //获取用户信息
-router.get('/getUserInfo',userinfoHandle.getUserInfo)
+router.post('/getUserInfo',userinfoHandle.getUserInfo)
 
 //修改用户姓名
 router.post('/changeUserName',expressJoi(name_limit),userinfoHandle.changeUserName)
